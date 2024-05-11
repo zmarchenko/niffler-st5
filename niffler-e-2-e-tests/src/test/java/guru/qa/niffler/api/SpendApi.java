@@ -7,9 +7,11 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface SpendApi {
+
     @POST("internal/spends/add")
     Call<SpendJson> createSpend(@Body SpendJson spendJson);
 
     @POST("internal/categories/add")
     Call<CategoryJson> createCategory(@Body CategoryJson spendJson);
+
 }
