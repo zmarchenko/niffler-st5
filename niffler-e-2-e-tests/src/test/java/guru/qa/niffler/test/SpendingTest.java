@@ -22,7 +22,6 @@ public class SpendingTest {
     private final UiBot ui = new UiBot();
 
     private final static String USERNAME = "zhanna1";
-    private final static String CATEGORY_NAME = "Обучение";
 
     static {
         Configuration.browserSize = "1920x1080";
@@ -39,15 +38,13 @@ public class SpendingTest {
     }
 
     @GenerateCategory(
-            category = CATEGORY_NAME,
+            category = "Обучение",
             username = USERNAME
     )
     @GenerateSpend(
-            username = USERNAME,
             description = "QA.GURU Advanced 5",
             amount = 65000.00,
-            currency = RUB,
-            category = CATEGORY_NAME
+            currency = RUB
     )
     @Test
     void spendingShouldBeDeletedAfterTableAction(SpendJson spendJson) {

@@ -6,13 +6,17 @@ import guru.qa.niffler.model.CategoryJson;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.platform.commons.support.AnnotationSupport;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
 
+import static java.util.Objects.requireNonNull;
+import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
+
 public class CategoryExtension implements BeforeEachCallback {
+
+    public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(CategoryExtension.class);
 
     private static final OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
@@ -26,7 +30,7 @@ public class CategoryExtension implements BeforeEachCallback {
 
     @Override
     public void beforeEach(ExtensionContext extensionContext) {
-        AnnotationSupport.findAnnotation(
+        findAnnotation(
                 extensionContext.getRequiredTestMethod(),
                 GenerateCategory.class
         ).ifPresent(
@@ -39,6 +43,13 @@ public class CategoryExtension implements BeforeEachCallback {
 
                     try {
                         spendApi.createCategory(categoryJson).execute();
+                        CategoryJson result = requireNonNull(spendApi.getCategories("zhanna1").execute()
+                                .body()).stream()
+                                .filter(cat -> cat.category().equals(generateCategory.category()))
+                                .findAny()
+                                .orElseThrow();
+
+                        extensionContext.getStore(NAMESPACE).put(extensionContext.getUniqueId(), result);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

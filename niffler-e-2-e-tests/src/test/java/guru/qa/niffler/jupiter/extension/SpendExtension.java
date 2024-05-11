@@ -2,6 +2,7 @@ package guru.qa.niffler.jupiter.extension;
 
 import guru.qa.niffler.api.SpendApi;
 import guru.qa.niffler.jupiter.annotation.GenerateSpend;
+import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.model.SpendJson;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -18,9 +19,7 @@ import java.util.Date;
 
 public class SpendExtension implements BeforeEachCallback, ParameterResolver {
 
-    private static final String SPEND = "spend";
-
-    private static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(SpendExtension.class);
+    public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(SpendExtension.class);
 
     private static final OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
@@ -34,6 +33,10 @@ public class SpendExtension implements BeforeEachCallback, ParameterResolver {
 
     @Override
     public void beforeEach(ExtensionContext extensionContext) {
+        CategoryJson category = extensionContext.getStore(CategoryExtension.NAMESPACE).get(
+                extensionContext.getUniqueId(),
+                CategoryJson.class);
+
         AnnotationSupport.findAnnotation(
                 extensionContext.getRequiredTestMethod(),
                 GenerateSpend.class
@@ -42,15 +45,15 @@ public class SpendExtension implements BeforeEachCallback, ParameterResolver {
                     SpendJson spendJson = new SpendJson(
                             null,
                             new Date(),
-                            generateSpend.category(),
+                            category.category(),
                             generateSpend.currency(),
                             generateSpend.amount(),
                             generateSpend.description(),
-                            generateSpend.username());
+                            category.username());
 
                     try {
                         SpendJson result = spendApi.createSpend(spendJson).execute().body();
-                        extensionContext.getStore(NAMESPACE).put(SPEND, result);
+                        extensionContext.getStore(NAMESPACE).put(extensionContext.getUniqueId(), result);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -65,7 +68,7 @@ public class SpendExtension implements BeforeEachCallback, ParameterResolver {
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return extensionContext.getStore(NAMESPACE).get(SPEND);
+        return extensionContext.getStore(NAMESPACE).get(extensionContext.getUniqueId());
     }
 
 }

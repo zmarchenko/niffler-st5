@@ -11,10 +11,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface GenerateSpend {
 
-    String category();
     CurrencyValues currency();
     String description();
-    String username();
     double amount();
 
 }
