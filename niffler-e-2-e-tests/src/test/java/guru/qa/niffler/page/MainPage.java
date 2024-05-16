@@ -12,13 +12,15 @@ public class MainPage {
 
     private final ElementsCollection tableRows = $(".spendings-table").$(" tbody").$$("tr");
     private final SelenideElement deleteSpendingBtn = $(".spendings__table-controls").find(byText("Delete selected"));
+    private SelenideElement spendingRow;
 
-    public SelenideElement findRowByText(String text) {
-        return tableRows.find(text(text));
+    public MainPage findRowByText(String text) {
+        spendingRow = tableRows.find(text(text));
+        return this;
     }
 
-    public MainPage chooseSpending(SelenideElement spending) {
-        spending.$$("td").first().scrollTo().click();
+    public MainPage chooseSpending() {
+        spendingRow.$("td").scrollTo().click();
         return this;
     }
 
