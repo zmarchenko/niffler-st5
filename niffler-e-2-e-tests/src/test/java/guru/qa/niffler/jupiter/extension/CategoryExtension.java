@@ -36,7 +36,7 @@ public class CategoryExtension implements BeforeEachCallback {
         ).ifPresent(
                 generateCategory -> {
                     CategoryJson categoryJson = new CategoryJson(
-                            null,
+                            null, 
                             generateCategory.category(),
                             generateCategory.username()
                     );

@@ -16,7 +16,7 @@ public interface SpendApi {
     Call<SpendJson> createSpend(@Body SpendJson spendJson);
 
     @POST("internal/categories/add")
-    Call<CategoryJson> createCategory(@Body CategoryJson spendJson);
+    Call<CategoryJson> createCategory(@Body CategoryJson categoryJson);
 
     @GET("internal/categories/all")
     Call<List<CategoryJson>> getCategories(@Query("username") String username);

@@ -10,4 +10,6 @@ public class UiBot {
         return new MainPage();
     }
 
+    public PeoplePage peoplePage() {return new PeoplePage();}
+
 }
