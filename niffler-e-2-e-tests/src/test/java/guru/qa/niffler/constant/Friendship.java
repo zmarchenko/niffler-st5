@@ -1,8 +1,8 @@
 package guru.qa.niffler.constant;
 
-public enum Action {
+public enum Friendship {
 
-    INVITATION_SEND,
+    PENDING_INVITATION,
     INVITATION_RECEIVED,
     WITH_FRIENDS
 

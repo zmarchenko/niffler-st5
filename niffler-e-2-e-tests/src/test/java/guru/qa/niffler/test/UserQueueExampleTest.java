@@ -10,9 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static guru.qa.niffler.constant.Action.INVITATION_RECEIVED;
-import static guru.qa.niffler.constant.Action.INVITATION_SEND;
-import static guru.qa.niffler.constant.Action.WITH_FRIENDS;
+import static guru.qa.niffler.constant.Friendship.INVITATION_RECEIVED;
+import static guru.qa.niffler.constant.Friendship.PENDING_INVITATION;
+import static guru.qa.niffler.constant.Friendship.WITH_FRIENDS;
 
 @WebTest
 @ExtendWith(UserQueueExtension.class)
@@ -26,43 +26,61 @@ public class UserQueueExampleTest {
     }
 
     @Test
-    void test1(@User(action = WITH_FRIENDS) UserJson userJson) {
+    void userWithFriendTest1(@User(friendship = WITH_FRIENDS) UserJson userWithFriend) {
         ui.startPage()
                 .clickLogin()
-                .setUsername(userJson.username())
-                .setPassword(userJson.testData().password())
+                .setUsername(userWithFriend.username())
+                .setPassword(userWithFriend.testData().password())
                 .clickSignIn()
                 .clickAllPeople()
-                .getRowWithUsername(userJson.username())
+                .getRowWithUsername("duck")
                 .assertThatActionHasStatus("You are friends");
     }
 
     @Test
-    void test2(
-            @User(action = INVITATION_SEND) UserJson userSend,
-            @User(action = INVITATION_RECEIVED) UserJson userReceived) {
+    void userWithFriendTest2(@User(friendship = WITH_FRIENDS) UserJson userWithFriend) {
         ui.startPage()
                 .clickLogin()
-                .login(userSend)
+                .setUsername(userWithFriend.username())
+                .setPassword(userWithFriend.testData().password())
+                .clickSignIn()
                 .clickAllPeople()
-                .getRowWithUsername(userReceived.username())
+                .getRowWithUsername("duck")
+                .assertThatActionHasStatus("You are friends");
+    }
+
+    @Test
+    void pendingInvitationTest(
+            @User(friendship = PENDING_INVITATION) UserJson sendInviteUser,
+            @User(friendship = INVITATION_RECEIVED) UserJson receiveInviteUser) {
+        ui.startPage()
+                .clickLogin()
+                .setUsername(sendInviteUser.username())
+                .setPassword(sendInviteUser.testData().password())
+                .clickSignIn()
+                .clickAllPeople()
+                .getRowWithUsername(receiveInviteUser.username())
                 .assertThatActionHasStatus("Pending invitation");
     }
 
     @Test
-    void test3(@User(action = INVITATION_SEND) UserJson userSend,
-               @User(action = INVITATION_RECEIVED) UserJson userReceived) {
+    void receiveInvitationTest(
+            @User(friendship = PENDING_INVITATION) UserJson sendInviteUser,
+            @User(friendship = INVITATION_RECEIVED) UserJson receiveInviteUser) {
         ui.startPage()
                 .clickLogin()
-                .login(userReceived)
+                .setUsername(receiveInviteUser.username())
+                .setPassword(receiveInviteUser.testData().password())
+                .clickSignIn()
                 .clickAllPeople()
-                .getRowWithUsername(userSend.username())
+                .getRowWithUsername(sendInviteUser.username())
                 .assertThatSubmitActionIsEnabled()
                 .assertThatDeclineActionIsEnabled();
     }
 
+
     @Test
-    void loginTest1(UserJson userJson) {
+    void loginTest1(@User UserJson userJson) {
         ui.startPage()
                 .clickLogin()
                 .setUsername(userJson.username())
@@ -72,7 +90,7 @@ public class UserQueueExampleTest {
     }
 
     @Test
-    void loginTest2(UserJson userJson) {
+    void loginTest2(@User UserJson userJson) {
         ui.startPage()
                 .clickLogin()
                 .setUsername(userJson.username())
@@ -82,7 +100,7 @@ public class UserQueueExampleTest {
     }
 
     @Test
-    void loginTest3(UserJson userJson) {
+    void loginTest3(@User UserJson userJson) {
         ui.startPage()
                 .clickLogin()
                 .setUsername(userJson.username())
@@ -92,7 +110,7 @@ public class UserQueueExampleTest {
     }
 
     @Test
-    void loginTest4(UserJson userJson) {
+    void loginTest4(@User UserJson userJson) {
         ui.startPage()
                 .clickLogin()
                 .setUsername(userJson.username())
@@ -102,7 +120,7 @@ public class UserQueueExampleTest {
     }
 
     @Test
-    void loginTest5(UserJson userJson) {
+    void loginTest5(@User UserJson userJson) {
         ui.startPage()
                 .clickLogin()
                 .setUsername(userJson.username())
