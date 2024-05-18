@@ -36,18 +36,17 @@ public class CategoryExtension implements BeforeEachCallback {
         ).ifPresent(
                 generateCategory -> {
                     CategoryJson categoryJson = new CategoryJson(
-                            null, 
+                            null,
                             generateCategory.category(),
                             generateCategory.username()
                     );
 
                     try {
-                        spendApi.createCategory(categoryJson).execute();
-                        CategoryJson result = requireNonNull(spendApi.getCategories("zhanna1").execute()
+                        CategoryJson result = requireNonNull(spendApi.getCategories(categoryJson.username()).execute()
                                 .body()).stream()
                                 .filter(cat -> cat.category().equals(generateCategory.category()))
                                 .findAny()
-                                .orElseThrow();
+                                .orElse(spendApi.createCategory(categoryJson).execute().body());
 
                         extensionContext.getStore(NAMESPACE).put(extensionContext.getUniqueId(), result);
                     } catch (IOException e) {
