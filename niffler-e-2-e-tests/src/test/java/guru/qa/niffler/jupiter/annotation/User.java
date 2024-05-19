@@ -7,12 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static guru.qa.niffler.constant.Friendship.WITH_FRIENDS;
+import static guru.qa.niffler.constant.Friendship.DEFAULT;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
 public @interface User {
 
-    Friendship friendship() default WITH_FRIENDS;
+    Friendship friendship() default DEFAULT;
 
 }
