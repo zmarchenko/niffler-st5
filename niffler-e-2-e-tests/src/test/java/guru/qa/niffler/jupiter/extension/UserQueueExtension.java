@@ -8,9 +8,10 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import static guru.qa.niffler.constant.Friendship.DEFAULT;
 import static guru.qa.niffler.constant.Friendship.INVITATION_RECEIVED;
 import static guru.qa.niffler.constant.Friendship.PENDING_INVITATION;
 import static guru.qa.niffler.constant.Friendship.WITH_FRIENDS;
@@ -19,12 +20,13 @@ import static guru.qa.niffler.model.UserJson.simpleUser;
 
 public class UserQueueExtension implements ParameterResolver {
 
-    private static final Map<Friendship, UserJson> USERS = new HashMap<>();
+    private static final Map<Friendship, UserJson> USERS = new ConcurrentHashMap<>();
 
     static {
         USERS.put(WITH_FRIENDS, simpleUser("zhanna1", "test"));
-        USERS.put(INVITATION_RECEIVED, simpleUser("dima", "test"));
-        USERS.put(PENDING_INVITATION, simpleUser("duck", "test"));
+        USERS.put(INVITATION_RECEIVED, simpleUser("dima", "test_user1"));
+        USERS.put(PENDING_INVITATION, simpleUser("duck", "krya-krya2"));
+        USERS.put(DEFAULT, simpleUser("tester", "qa_pass_666"));
     }
 
     @Override

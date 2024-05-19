@@ -24,12 +24,6 @@ public class MainPage {
 
     public MainPage chooseSpending() {
         spendingRow.$("td").scrollTo().click();
-    public SelenideElement findRowByText(String text) {
-        return tableRows.find(text(text));
-    }
-
-    public MainPage chooseSpending(SelenideElement spending) {
-        spending.$$("td").first().scrollTo().click();
         return this;
     }
 

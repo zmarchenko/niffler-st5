@@ -2,7 +2,6 @@ package guru.qa.niffler.test;
 
 import com.codeborne.selenide.Selenide;
 import guru.qa.niffler.jupiter.annotation.User;
-import guru.qa.niffler.jupiter.annotation.meta.WebTest;
 import guru.qa.niffler.jupiter.extension.UserQueueExtension;
 import guru.qa.niffler.model.UserJson;
 import guru.qa.niffler.page.UiBot;
@@ -14,7 +13,6 @@ import static guru.qa.niffler.constant.Friendship.INVITATION_RECEIVED;
 import static guru.qa.niffler.constant.Friendship.PENDING_INVITATION;
 import static guru.qa.niffler.constant.Friendship.WITH_FRIENDS;
 
-@WebTest
 @ExtendWith(UserQueueExtension.class)
 public class UserQueueExampleTest {
 
@@ -26,106 +24,50 @@ public class UserQueueExampleTest {
     }
 
     @Test
-    void userWithFriendTest1(@User(friendship = WITH_FRIENDS) UserJson userWithFriend) {
+    void userWithFriendTest(@User(friendship = WITH_FRIENDS) UserJson userWithFriend,
+                            @User() UserJson secondUserWithFriend) {
         ui.startPage()
-                .clickLogin()
-                .setUsername(userWithFriend.username())
-                .setPassword(userWithFriend.testData().password())
-                .clickSignIn()
+                .login(userWithFriend)
                 .clickAllPeople()
-                .getRowWithUsername("duck")
-                .assertThatActionHasStatus("You are friends");
+                .getRowWithUsername(secondUserWithFriend.username())
+                .assertThatActionHasStatus(WITH_FRIENDS.getMessage());
     }
 
     @Test
-    void userWithFriendTest2(@User(friendship = WITH_FRIENDS) UserJson userWithFriend) {
+    void invitationReceivedTest(
+            @User(friendship = PENDING_INVITATION) UserJson requester,
+            @User(friendship = INVITATION_RECEIVED) UserJson addressee) {
         ui.startPage()
-                .clickLogin()
-                .setUsername(userWithFriend.username())
-                .setPassword(userWithFriend.testData().password())
-                .clickSignIn()
+                .login(addressee)
                 .clickAllPeople()
-                .getRowWithUsername("duck")
-                .assertThatActionHasStatus("You are friends");
-    }
-
-    @Test
-    void pendingInvitationTest(
-            @User(friendship = PENDING_INVITATION) UserJson sendInviteUser,
-            @User(friendship = INVITATION_RECEIVED) UserJson receiveInviteUser) {
-        ui.startPage()
-                .clickLogin()
-                .setUsername(sendInviteUser.username())
-                .setPassword(sendInviteUser.testData().password())
-                .clickSignIn()
-                .clickAllPeople()
-                .getRowWithUsername(receiveInviteUser.username())
-                .assertThatActionHasStatus("Pending invitation");
-    }
-
-    @Test
-    void receiveInvitationTest(
-            @User(friendship = PENDING_INVITATION) UserJson sendInviteUser,
-            @User(friendship = INVITATION_RECEIVED) UserJson receiveInviteUser) {
-        ui.startPage()
-                .clickLogin()
-                .setUsername(receiveInviteUser.username())
-                .setPassword(receiveInviteUser.testData().password())
-                .clickSignIn()
-                .clickAllPeople()
-                .getRowWithUsername(sendInviteUser.username())
+                .getRowWithUsername(requester.username())
                 .assertThatSubmitActionIsEnabled()
                 .assertThatDeclineActionIsEnabled();
+    }
+
+    @Test
+    void invitationSentTest(
+            @User(friendship = PENDING_INVITATION) UserJson requester,
+            @User(friendship = INVITATION_RECEIVED) UserJson addressee) {
+        ui.startPage()
+                .login(requester)
+                .clickAllPeople()
+                .getRowWithUsername(addressee.username())
+                .assertThatActionHasStatus(PENDING_INVITATION.getMessage());
     }
 
 
     @Test
     void loginTest1(@User UserJson userJson) {
         ui.startPage()
-                .clickLogin()
-                .setUsername(userJson.username())
-                .setPassword(userJson.testData().password())
-                .clickSignIn()
+                .login(userJson)
                 .assertThatAvatarIsVisible();
     }
 
     @Test
     void loginTest2(@User UserJson userJson) {
         ui.startPage()
-                .clickLogin()
-                .setUsername(userJson.username())
-                .setPassword(userJson.testData().password())
-                .clickSignIn()
-                .assertThatAvatarIsVisible();
-    }
-
-    @Test
-    void loginTest3(@User UserJson userJson) {
-        ui.startPage()
-                .clickLogin()
-                .setUsername(userJson.username())
-                .setPassword(userJson.testData().password())
-                .clickSignIn()
-                .assertThatAvatarIsVisible();
-    }
-
-    @Test
-    void loginTest4(@User UserJson userJson) {
-        ui.startPage()
-                .clickLogin()
-                .setUsername(userJson.username())
-                .setPassword(userJson.testData().password())
-                .clickSignIn()
-                .assertThatAvatarIsVisible();
-    }
-
-    @Test
-    void loginTest5(@User UserJson userJson) {
-        ui.startPage()
-                .clickLogin()
-                .setUsername(userJson.username())
-                .setPassword(userJson.testData().password())
-                .clickSignIn()
+                .login(userJson)
                 .assertThatAvatarIsVisible();
     }
 

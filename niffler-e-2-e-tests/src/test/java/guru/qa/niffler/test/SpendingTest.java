@@ -2,19 +2,20 @@ package guru.qa.niffler.test;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
 import guru.qa.niffler.jupiter.annotation.GenerateCategory;
 import guru.qa.niffler.jupiter.annotation.GenerateSpend;
-import guru.qa.niffler.jupiter.annotation.meta.WebTest;
+import guru.qa.niffler.jupiter.extension.CategoryExtension;
+import guru.qa.niffler.jupiter.extension.SpendExtension;
 import guru.qa.niffler.model.SpendJson;
 import guru.qa.niffler.page.UiBot;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static guru.qa.niffler.model.CurrencyValues.RUB;
 
 
-@WebTest
+@ExtendWith({CategoryExtension.class, SpendExtension.class})
 public class SpendingTest {
 
     private final UiBot ui = new UiBot();
@@ -46,11 +47,9 @@ public class SpendingTest {
     )
     @Test
     void spendingShouldBeDeletedAfterTableAction(SpendJson spendJson) {
-        SelenideElement spendingRow = ui.mainPage()
-                .findRowByText(spendJson.description());
-
         ui.mainPage()
-                .chooseSpending(spendingRow)
+                .findRowByText(spendJson.description())
+                .chooseSpending()
                 .deleteChosenSpending()
                 .assertThatTableContentHasSize(0);
     }
