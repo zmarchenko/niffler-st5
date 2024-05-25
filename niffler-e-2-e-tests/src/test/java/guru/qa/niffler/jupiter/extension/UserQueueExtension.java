@@ -80,7 +80,7 @@ public class UserQueueExtension implements BeforeEachCallback, AfterEachCallback
             testUsers.get(friendship).add(user);
         }
 
-        Allure.getLifecycle() // В Timeline тесты выполняются друг за другом - не одновременно
+        Allure.getLifecycle() // В Timeline видно, что тесты выполняются друг за другом - не одновременно
                 .updateTestCase(
                         testCase -> testCase.setStart(new Date().getTime())
                 );
@@ -97,7 +97,7 @@ public class UserQueueExtension implements BeforeEachCallback, AfterEachCallback
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return parameterContext.getParameter().getType().isAssignableFrom(UserJson.class);
+        return parameterContext.isAnnotated(User.class);
     }
 
     @Override
