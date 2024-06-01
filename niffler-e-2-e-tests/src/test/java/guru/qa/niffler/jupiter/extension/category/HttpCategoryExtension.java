@@ -27,7 +27,8 @@ public class HttpCategoryExtension extends AbstractCategoryExtension {
         try {
             return requireNonNull(spendApi.getCategories(categoryJson.username()).execute()
                     .body()).stream()
-                    .filter(cat -> cat.categoryName().equals(categoryJson.categoryName()))
+                    .filter(cat -> cat.username().equals(categoryJson.username()) &&
+                                    cat.categoryName().equals(categoryJson.categoryName()))
                     .findAny()
                     .orElse(spendApi.createCategory(categoryJson).execute().body());
         } catch (IOException e) {
