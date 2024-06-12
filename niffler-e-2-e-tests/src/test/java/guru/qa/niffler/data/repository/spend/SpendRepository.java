@@ -16,6 +16,9 @@ public interface SpendRepository {
             case SPRING_JDBC -> {
                 return new SpendRepositorySpringJdbc();
             }
+            case HIBERNATE -> {
+                return new SpendRepositoryHibernate();
+            }
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }
     }
@@ -23,6 +26,8 @@ public interface SpendRepository {
     SpendEntity createSpend(SpendEntity spend);
 
     CategoryEntity createCategory(CategoryEntity category);
+
+    List<CategoryEntity> findAllByCategoryName(String categoryName);
 
     List<SpendEntity> findAllByUsername(String username);
 
