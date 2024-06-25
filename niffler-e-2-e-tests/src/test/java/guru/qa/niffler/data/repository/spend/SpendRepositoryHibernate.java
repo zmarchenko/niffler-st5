@@ -42,6 +42,16 @@ public class SpendRepositoryHibernate implements SpendRepository {
     }
 
     @Override
+    public SpendEntity findAByUsernameAndDescription(String username, String description) {
+        return em.createQuery(
+                        "FROM SpendEntity WHERE username = :username AND description = :description",
+                        SpendEntity.class)
+                .setParameter("username", username)
+                .setParameter("description", description)
+                .getSingleResult();
+    }
+
+    @Override
     public CategoryEntity editCategory(CategoryEntity category) {
         return em.merge(category);
     }

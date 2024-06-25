@@ -38,7 +38,12 @@ public class UserRepositoryHibernate implements UserRepository {
 
     @Override
     public UserEntity findUserInUserdataById(UUID id) {
-        return null;
+        return userDataEm.createQuery(
+                "FROM UserEntity WHERE id = :id",
+                        UserEntity.class
+        )
+                .setParameter("id", id)
+                .getSingleResult();
     }
 
     @Override

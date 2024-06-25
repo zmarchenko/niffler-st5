@@ -146,4 +146,11 @@ public class SpendRepositorySpringJdbc implements SpendRepository {
                 username);
     }
 
+    @Override
+    public SpendEntity findAByUsernameAndDescription(String username, String description) {
+        return jdbcTemplate.queryForObject("SELECT * FROM spend WHERE username = ? AND description = ?",
+                SpendEntityRowMapper.INSTANCE,
+                username, description);
+    }
+
 }
