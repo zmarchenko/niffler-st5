@@ -31,6 +31,8 @@ public interface SpendRepository {
 
     List<SpendEntity> findAllByUsername(String username);
 
+    SpendEntity findAByUsernameAndDescription(String username, String description);
+
     CategoryEntity editCategory(CategoryEntity category);
 
     SpendEntity editSpend(SpendEntity spend);

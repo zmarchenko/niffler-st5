@@ -213,4 +213,29 @@ public class SpendRepositoryJdbc implements SpendRepository {
         }
     }
 
+    @Override
+    public SpendEntity findAByUsernameAndDescription(String username, String description) {
+        try (Connection connection = spendDataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT * FROM spend WHERE username = ? AND description = ?"
+             )) {
+
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, description);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            SpendEntity spend = null;
+
+            while (resultSet.next()) {
+                spend = SpendEntityRowMapper.INSTANCE.mapRow(resultSet, 0);
+            }
+
+            return spend;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
