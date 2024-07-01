@@ -3,7 +3,8 @@ package guru.qa.niffler.config;
 public interface Config {
 
     static Config getInstance() {
-        if ("local".equals(System.getProperty("test.env", "local"))) {
+        String environment = System.getProperty("test.env", "local");
+        if ("local".equals(environment)) {
             return LocalConfig.instance;
         } else if ("docker".equals(System.getProperty("test.env"))) {
             return DockerConfig.instance;

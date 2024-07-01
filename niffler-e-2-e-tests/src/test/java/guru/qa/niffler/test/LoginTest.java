@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-
 public class LoginTest extends BaseWebTest {
 
     @Test

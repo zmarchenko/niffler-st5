@@ -43,4 +43,5 @@ public class ProfileTest extends BaseWebTest {
                 .addCategory(category)
                 .checkCategoryList(category);
     }
+
 }
