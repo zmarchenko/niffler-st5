@@ -17,6 +17,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.$$;
 import static guru.qa.niffler.condition.spend.SpendsCondition.spendsInTable;
 
 public class MainPage extends BasePage<MainPage> {
