@@ -25,7 +25,7 @@ public enum Database {
     }
 
     public String getP6SpyUrl(){
-        return "jdbc:p6spy" + StringUtils.substringAfter(getJdbcUrl(), ":");
+        return "jdbc:p6spy:" + StringUtils.substringAfter(getJdbcUrl(), ":");
     }
 
 }
