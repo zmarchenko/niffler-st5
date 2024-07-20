@@ -2,17 +2,23 @@ package guru.qa.niffler.jupiter.extension;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
+import guru.qa.niffler.api.ThreadSafeCookieStore;
+import guru.qa.niffler.config.Config;
+import guru.qa.niffler.jupiter.extension.user.ApiLoginExtension;
 import io.qameta.allure.Allure;
 import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.LifecycleMethodExecutionExceptionHandler;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.OutputType;
 
 import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
 public class BrowserExtension implements
+        BeforeTestExecutionCallback,
         LifecycleMethodExecutionExceptionHandler,
         AfterEachCallback,
         TestExecutionExceptionHandler {
@@ -53,4 +59,13 @@ public class BrowserExtension implements
         }
     }
 
+    @Override
+    public void beforeTestExecution(ExtensionContext context) {
+        if (ApiLoginExtension.getToken() != null) {
+            Selenide.open(Config.getInstance().frontUrl());
+            Selenide.sessionStorage().setItem("id_token", ApiLoginExtension.getToken());
+            WebDriverRunner.getWebDriver().manage().addCookie(new Cookie("JSESSIONID",
+                    ThreadSafeCookieStore.INSTANCE.getCookieValue("JSESSIONID")));
+        }
+    }
 }

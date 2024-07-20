@@ -1,5 +1,6 @@
 package guru.qa.niffler.jupiter.extension.user;
 
+import guru.qa.niffler.jupiter.annotation.ApiLogin;
 import guru.qa.niffler.jupiter.annotation.TestUser;
 import guru.qa.niffler.model.UserJson;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -7,7 +8,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
-import org.junit.platform.commons.support.AnnotationSupport;
+
+import java.lang.reflect.Method;
 
 public abstract class CreateUserExtension implements BeforeEachCallback, ParameterResolver {
 
@@ -17,15 +19,13 @@ public abstract class CreateUserExtension implements BeforeEachCallback, Paramet
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        AnnotationSupport.findAnnotation(
-                context.getRequiredTestMethod(),
-                TestUser.class
-        ).ifPresent(
-                generateUser -> {
-                    UserJson userJson = UserJson.randomUser();
-                    context.getStore(NAMESPACE).put(context.getUniqueId(), createUser(userJson));
-                }
-        );
+        Method method = context.getRequiredTestMethod();
+
+        if (method.getAnnotation(TestUser.class) != null ||
+                method.getAnnotation(ApiLogin.class).user() != null) {
+            UserJson userJson = UserJson.randomUser();
+            context.getStore(NAMESPACE).put(context.getUniqueId(), createUser(userJson));
+        }
     }
 
     @Override

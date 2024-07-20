@@ -13,6 +13,8 @@ public interface Config {
         }
     }
 
+    String authUrl();
+
     String frontUrl();
 
     String spendUrl();

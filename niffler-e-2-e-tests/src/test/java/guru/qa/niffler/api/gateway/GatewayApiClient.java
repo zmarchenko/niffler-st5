@@ -1,5 +1,6 @@
-package guru.qa.niffler.api;
+package guru.qa.niffler.api.gateway;
 
+import guru.qa.niffler.api.ApiClient;
 import guru.qa.niffler.model.CategoryJson;
 import guru.qa.niffler.model.CurrencyJson;
 import guru.qa.niffler.model.FriendJson;
