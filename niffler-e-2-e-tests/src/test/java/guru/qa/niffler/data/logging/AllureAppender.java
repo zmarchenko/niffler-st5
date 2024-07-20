@@ -12,11 +12,17 @@ import org.apache.commons.lang3.StringUtils;
 
 public class AllureAppender extends StdoutLogger {
 
+
+import org.junit.platform.commons.util.StringUtils;
+
+public class AllureAppender extends StdoutLogger {
+
     private final AttachmentProcessor<AttachmentData> processor = new DefaultAttachmentProcessor();
 
     @Override
     public void logSQL(int connectionId, String now, long elapsed, Category category, String prepared, String sql, String url) {
         if (StringUtils.isNotBlank(sql)) {
+
             SqlRequestAttachment sqlRequestAttachment = new SqlRequestAttachment(
                     sql.split("\\s+")[0] + StringUtils.substringBefore(url, "?"),
                     SqlFormatter.of(Dialect.PlSql).format(sql)
@@ -24,6 +30,10 @@ public class AllureAppender extends StdoutLogger {
             processor.addAttachment(
                     sqlRequestAttachment,
                     new FreemarkerAttachmentRenderer("sql-query.ftl"));
+            SqlRequestAttachment sqlRequestAttachment = new SqlRequestAttachment("name", SqlFormatter.of(Dialect.PlSql).format(sql));
+            processor.addAttachment(sqlRequestAttachment, new FreemarkerAttachmentRenderer(templateName));
+
         }
     }
+  
 }
