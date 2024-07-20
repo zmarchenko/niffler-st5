@@ -4,14 +4,17 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.AllureLifecycle;
 import io.qameta.allure.model.TestResult;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.extension.ExtensionContext;
+
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
+
 public class AllureLogsExtension implements SuiteExtension {
 
-    public static final String caseName = "logs";
+  public static final String caseName = "logs";
 
     @SneakyThrows
     @Override
@@ -32,7 +35,7 @@ public class AllureLogsExtension implements SuiteExtension {
         lifecycle.addAttachment("userdata log", "text/html", ".log", Files.newInputStream(
                 Path.of("./userdata.log")));
 
-        lifecycle.startTestCase(caseId);
+        lifecycle.stopTestCase(caseId);
         lifecycle.writeTestCase(caseId);
     }
 }

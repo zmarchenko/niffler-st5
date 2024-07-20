@@ -21,9 +21,8 @@ public class AllureAppender extends StdoutLogger {
                     sql.split("\\s+")[0] + StringUtils.substringBefore(url, "?"),
                     SqlFormatter.of(Dialect.PlSql).format(sql)
             );
-            processor.addAttachment(
-                    sqlRequestAttachment,
-                    new FreemarkerAttachmentRenderer("sql-query.ftl"));
+            String templateName = "sql-query.ftl";
+            processor.addAttachment(sqlRequestAttachment, new FreemarkerAttachmentRenderer(templateName));
         }
     }
 }

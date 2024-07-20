@@ -1,22 +1,20 @@
 package guru.qa.niffler.data.logging;
 
 import io.qameta.allure.attachment.AttachmentData;
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Getter
+
+@RequiredArgsConstructor
 public class SqlRequestAttachment implements AttachmentData {
 
     private final String name;
+
+    @Getter
     private final String sql;
 
-    public SqlRequestAttachment(String name, String sql) {
-        this.name = name;
-        this.sql = sql;
-    }
 
     @Override
     public String getName() {
         return name;
     }
-
 }
