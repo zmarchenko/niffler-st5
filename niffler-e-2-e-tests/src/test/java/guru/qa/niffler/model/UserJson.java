@@ -76,7 +76,7 @@ public record UserJson(
                 null,
                 null,
                 null,
-                new TestData("generated_user")
+                new TestData(faker.internet().password())
         );
     }
 }

@@ -7,7 +7,12 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface TestUser {
+public @interface ApiLogin {
 
-    boolean handle() default true;
+    String username() default "";
+
+    String password() default "";
+
+    TestUser user();
+
 }

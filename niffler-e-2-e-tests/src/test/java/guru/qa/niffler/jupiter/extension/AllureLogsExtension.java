@@ -13,7 +13,7 @@ import java.util.UUID;
 
 
 public class AllureLogsExtension implements SuiteExtension {
-  
+
   public static final String caseName = "logs";
 
     @SneakyThrows

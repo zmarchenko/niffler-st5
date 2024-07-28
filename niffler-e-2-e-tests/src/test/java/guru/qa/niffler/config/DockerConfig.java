@@ -5,6 +5,11 @@ public class DockerConfig implements Config {
     static final DockerConfig instance = new DockerConfig();
 
     @Override
+    public String authUrl() {
+        return "http://auth.niffler.dc:9000/";
+    }
+
+    @Override
     public String frontUrl() {
         return "http://frontend.niffler.dc/";
     }
@@ -16,7 +21,7 @@ public class DockerConfig implements Config {
 
     @Override
     public String gatewayUrl() {
-        return  "http:/gateway.niffler.dc:8090/";
+        return "http:/gateway.niffler.dc:8090/";
     }
 
     @Override

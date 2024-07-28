@@ -7,6 +7,11 @@ public class LocalConfig implements Config {
     private static final String URL = "http://127.0.0.1:";
 
     @Override
+    public String authUrl() {
+        return URL + "9000/";
+    }
+
+    @Override
     public String frontUrl() {return URL + "3000/";}
 
     @Override
