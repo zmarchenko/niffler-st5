@@ -29,7 +29,7 @@ public class ApiLoginExtension implements BeforeEachCallback, AfterEachCallback 
         ).ifPresent(annotation -> {
             if (!annotation.username().isEmpty() && !annotation.password().isEmpty()) {
                 authApiClient.doLogin(annotation.username(), annotation.password());
-            } else if (annotation.user() != null) {
+            } else if (annotation.user().handle()) {
                 UserJson testUser = context.getStore(CreateUserExtension.NAMESPACE)
                         .get(context.getUniqueId(), UserJson.class);
                 authApiClient.doLogin(testUser.username(), testUser.testData().password());
